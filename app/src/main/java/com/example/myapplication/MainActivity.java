@@ -29,12 +29,15 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, Activity1.class);
-                text = textView.getText().toString();
                 i.putExtra("Value",text);
-                startActivity(i);
-                finish();
+                startActivityForResult(i, 1);
+
             }
         });
+
+        Intent result = getIntent();
+        String resultText = result.getStringExtra("Act5");
+        textView.setText("All Messages: \n"+resultText);
     }
 
     @Override

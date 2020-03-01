@@ -7,19 +7,19 @@
     tools:context=".Activity3">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="192dp"
         android:gravity="center"
         android:text="Value"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/next3"
         android:layout_width="match_parent"
         android:layout_height="94dp"
-        android:layout_below="@id/textView"
+        android:layout_below="@id/textView3"
         android:layout_marginTop="1dp"
         android:text="Next"
         android:textSize="25sp" />

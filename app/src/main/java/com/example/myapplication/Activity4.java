@@ -19,7 +19,7 @@ public class Activity4 extends AppCompatActivity {
         setContentView(R.layout.activity_5);
 
         next=findViewById(R.id.next4);
-        textView=findViewById(R.id.textView);
+        textView=findViewById(R.id.textView4);
         text=getIntent().getExtras().getString("Value");
         textView.setText(text);
 
@@ -28,9 +28,9 @@ public class Activity4 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Activity4.this, Activity5.class);
                 text = textView.getText().toString();
-                i.putExtra("Value",text+" I have read the Message");
+                i.putExtra("Value",text+"\n4)I have read the Message");
                 startActivity(i);
-                finish();
+
             }
         });
     }

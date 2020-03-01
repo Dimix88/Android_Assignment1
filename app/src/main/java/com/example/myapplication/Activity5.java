@@ -19,7 +19,7 @@ public class Activity5 extends AppCompatActivity {
         setContentView(R.layout.activity_6);
 
         next=findViewById(R.id.next5);
-        textView=findViewById(R.id.textView);
+        textView=findViewById(R.id.textView5);
         text=getIntent().getExtras().getString("Value");
         textView.setText(text);
 
@@ -28,9 +28,9 @@ public class Activity5 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Activity5.this, MainActivity.class);
                 text = textView.getText().toString();
-                i.putExtra("Value",text+" I have read the Message");
+                i.putExtra("Act5",text+"\n5)I have read the Message");
                 startActivity(i);
-                finish();
+
             }
         });
     }

@@ -29,7 +29,7 @@ public class Activity1 extends AppCompatActivity {
             public void onClick(View v) {
                 Intent i = new Intent(Activity1.this, Activity2.class);
                 text = textView.getText().toString();
-                i.putExtra("Value",text+" \n1)I have read the Message");
+                i.putExtra("Value",text+"\n1)I have read the Message");
                 startActivity(i);
 
             }

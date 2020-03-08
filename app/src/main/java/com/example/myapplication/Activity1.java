@@ -31,6 +31,7 @@ public class Activity1 extends AppCompatActivity {
                 text = textView.getText().toString();
                 i.putExtra("Value",text+"\n1)I have read the Message");
                 startActivity(i);
+                finish();
 
             }
         });

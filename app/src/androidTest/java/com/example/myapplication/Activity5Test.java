@@ -10,6 +10,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.*;
 
 public class Activity5Test {
@@ -85,5 +87,19 @@ public class Activity5Test {
         activityActivityTestRule5.launchActivity(createIntent("i"));
         onView(withId(R.id.next5)).perform(click());
         Thread.sleep(1000);
+    }
+    @Test
+    public void intentSendData(){
+
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(MainActivity.class.getName(),null,false);
+        onView(withId(R.id.button)).perform(click());
+        onView(withId(R.id.next1)).perform(click());
+        onView(withId(R.id.next2)).perform(click());
+        onView(withId(R.id.next3)).perform(click());
+        onView(withId(R.id.next4)).perform(click());
+        onView(withId(R.id.next5)).perform(click());
+        Activity mainActivity= getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 2000);
+        Assert.assertNotNull(mainActivity);
+        Assert.assertEquals("MainActivity",mainActivity.getLocalClassName());
     }
 }

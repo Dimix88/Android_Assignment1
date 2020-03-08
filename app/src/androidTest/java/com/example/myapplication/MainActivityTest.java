@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.app.Instrumentation;
 import android.content.Context;
 import android.content.Intent;
+import android.widget.TextView;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,6 +22,7 @@ import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.*;
 
 public class MainActivityTest {
@@ -51,9 +54,11 @@ public class MainActivityTest {
 
     @Test
     public void intentSendData(){
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(Activity1.class.getName(),null,false);
         onView(withId(R.id.button)).perform(click());
-        Intent i = new Intent();
-        activityActivityTestRule.launchActivity(i);
+        Activity activity1 = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 2000);
+        Assert.assertNotNull(activity1);
+        Assert.assertEquals("Activity1",activity1.getLocalClassName());
     }
     /*@Test
     public void getDataBack() throws InterruptedException {

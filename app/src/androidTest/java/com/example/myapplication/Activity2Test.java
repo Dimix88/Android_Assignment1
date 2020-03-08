@@ -10,6 +10,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -20,6 +21,7 @@ import static androidx.test.espresso.intent.Intents.intending;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.hasComponent;
 import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.junit.Assert.*;
 
 public class Activity2Test {
@@ -70,6 +72,17 @@ public class Activity2Test {
         activityActivityTestRule2.launchActivity(createIntent("i"));
         onView(withId(R.id.next2)).perform(click());
         Thread.sleep(2000);
+    }
+    @Test
+    public void intentSendData(){
+
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(Activity3.class.getName(),null,false);
+        onView(withId(R.id.button)).perform(click());
+        onView(withId(R.id.next1)).perform(click());
+        onView(withId(R.id.next2)).perform(click());
+        Activity activity3 = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 2000);
+        Assert.assertNotNull(activity3);
+        Assert.assertEquals("Activity3",activity3.getLocalClassName());
     }
 
 }

@@ -15,6 +15,7 @@ import androidx.test.espresso.intent.rule.IntentsTestRule;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
+import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -32,6 +33,7 @@ import static androidx.test.espresso.intent.matcher.IntentMatchers.toPackage;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.*;
 
@@ -42,7 +44,9 @@ public class Activity1Test {
      public IntentsTestRule<MainActivity>intentsTestRuleMain = new IntentsTestRule<>(MainActivity.class);
     public ActivityTestRule<MainActivity>activityActivityTestRuleMain= new ActivityTestRule<>(MainActivity.class,true,true);
     public IntentsTestRule<Activity1> intentsTestRule = new IntentsTestRule<>(Activity1.class);
-    public ActivityTestRule<Activity1> activityActivityTestRule = new ActivityTestRule<>(Activity1.class);
+    public ActivityTestRule<Activity1> activityActivityTestRule = new ActivityTestRule<Activity1>(Activity1.class);
+    Activity1 activity1 = activityActivityTestRule.getActivity();
+
 
 
 
@@ -71,11 +75,12 @@ public class Activity1Test {
     @Test
     public void intentSendData(){
 
-        Instrumentation.ActivityMonitor activityMonitor = new Instrumentation.ActivityMonitor("Activity2.class",null,true);
-        InstrumentationRegistry.getInstrumentation().addMonitor(activityMonitor);
+        Instrumentation.ActivityMonitor activityMonitor = getInstrumentation().addMonitor(Activity2.class.getName(),null,false);
         onView(withId(R.id.button)).perform(click());
         onView(withId(R.id.next1)).perform(click());
-        assertTrue(InstrumentationRegistry.getInstrumentation().checkMonitorHit(activityMonitor,2));
+        Activity activity2 = getInstrumentation().waitForMonitorWithTimeout(activityMonitor, 2000);
+        Assert.assertNotNull(activity2);
+        Assert.assertEquals("Activity2",activity2.getLocalClassName());
     }
 
     @Test
@@ -89,7 +94,7 @@ public class Activity1Test {
     public static Intent createIntent(String name){
         onView(withId(R.id.button)).perform(click());
         onView(withId(R.id.next1)).perform(click());
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Context context = getInstrumentation().getTargetContext();
         Intent i = new Intent(context,Activity1.class);
         i.putExtra("Value",name);
         return i;
@@ -101,4 +106,10 @@ public class Activity1Test {
         Thread.sleep(2000);
     }
 
+    @Test
+    public void onCreate() {
+
+        TextView view1 = activity1.findViewById(R.id.textView1);
+        Assert.assertNotNull(view1);
+    }
 }

@@ -2,8 +2,11 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.intent.ActivityResultFunction;
@@ -41,6 +44,8 @@ public class Activity1Test {
     public IntentsTestRule<Activity1> intentsTestRule = new IntentsTestRule<>(Activity1.class);
     public ActivityTestRule<Activity1> activityActivityTestRule = new ActivityTestRule<>(Activity1.class);
 
+
+
     @Test
     public void intentTestNow(){
 
@@ -66,7 +71,7 @@ public class Activity1Test {
     @Test
     public void intentSendData(){
 
-        Instrumentation.ActivityMonitor activityMonitor = new Instrumentation.ActivityMonitor("Activity2.class",null,false);
+        Instrumentation.ActivityMonitor activityMonitor = new Instrumentation.ActivityMonitor("Activity2.class",null,true);
         InstrumentationRegistry.getInstrumentation().addMonitor(activityMonitor);
         onView(withId(R.id.button)).perform(click());
         onView(withId(R.id.next1)).perform(click());
@@ -79,6 +84,21 @@ public class Activity1Test {
         onView(withId(R.id.button)).perform(click());
         onView(withId(R.id.next1)).perform(click());
         intended(allOf(hasComponent(hasShortClassName("Activity1.class")),toPackage("com.example.myapplication.Activity2"),hasExtra("Value",intent)));
+    }
+
+    public static Intent createIntent(String name){
+        onView(withId(R.id.button)).perform(click());
+        onView(withId(R.id.next1)).perform(click());
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Intent i = new Intent(context,Activity1.class);
+        i.putExtra("Value",name);
+        return i;
+    }
+    @Test
+    public void showIntentTest() throws InterruptedException {
+        activityActivityTestRule.launchActivity(createIntent("i"));
+        onView(withId(R.id.next1)).perform(click());
+        Thread.sleep(2000);
     }
 
 }

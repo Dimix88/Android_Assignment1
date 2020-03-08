@@ -2,10 +2,12 @@ package com.example.myapplication;
 
 import android.app.Activity;
 import android.app.Instrumentation;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
 import androidx.test.espresso.intent.rule.IntentsTestRule;
+import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 
 import org.junit.Rule;
@@ -52,6 +54,22 @@ public class Activity2Test {
         onView(withId(R.id.next2)).perform(click());
         intended(hasComponent(Activity1.class.getName()));
 
+    }
+
+    public static Intent createIntent(String name){
+        onView(withId(R.id.button)).perform(click());
+        onView(withId(R.id.next1)).perform(click());
+        onView(withId(R.id.next2)).perform(click());
+        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+        Intent i = new Intent(context,Activity2.class);
+        i.putExtra("Value",name);
+        return i;
+    }
+    @Test
+    public void showIntentTest() throws InterruptedException {
+        activityActivityTestRule2.launchActivity(createIntent("i"));
+        onView(withId(R.id.next2)).perform(click());
+        Thread.sleep(2000);
     }
 
 }
